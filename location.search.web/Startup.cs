@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Nest;
+using location.search.web.Infrastucture.Services;
 
 namespace location.search.web
 {
@@ -29,6 +30,7 @@ namespace location.search.web
             var node = new Uri(Configuration.GetValue<string>("AppSettings:ElasticConnection"));
             var settings = new ConnectionSettings(node).EnableDebugMode();
 
+            services.AddTransient<ILocationSearchService, LocationSearchService>();
             services.AddTransient(x => new ElasticClient(settings));
         }
 

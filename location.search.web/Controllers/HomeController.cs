@@ -7,49 +7,30 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using location.search.web.Models;
 using Nest;
+using location.search.web.Infrastucture.Services;
 
 namespace location.search.web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ElasticClient _elasticClient;
+        private readonly ILocationSearchService _locationSearchService;
 
-
-
-        public HomeController(ILogger<HomeController> logger, ElasticClient elasticClient)
+        public HomeController(ILogger<HomeController> logger, ILocationSearchService locationSearchService)
         {
             _logger = logger;
-            _elasticClient = elasticClient;
+            _locationSearchService = locationSearchService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var result = GetLocations(10,1000);
+            var towerOfLondon = new GeoLocation(51.507313, -0.074308);
+            var result = await _locationSearchService.SearchLocations(towerOfLondon, 10, 1000);
 
             return View();
         }
 
-        private List<LocationResponse>  GetLocations(int maxDistance, int maxResults)
-        {
-            var response = _elasticClient.Search<LocationResponse>(s => s
-                            .Index("locations")
-                            .From(0)
-                            .Size(1000)
-                            .Query(query => query.Bool(b => b.Filter(filter => filter
-                                .GeoDistance(geo => geo
-                                    .Field(f => f.Location) 
-                                    .Distance("20km").Location(52.6702278, 4.7011616)
-                                    .DistanceType(GeoDistanceType.Plane)
-                        ))
-                )));
 
-            var debugInformation = response.DebugInformation;
-            _logger.LogInformation(debugInformation.ToString());
-            
-            return response.Documents.ToList();
-                        
-        }
 
 
         public IActionResult Privacy()

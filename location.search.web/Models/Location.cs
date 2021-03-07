@@ -8,6 +8,8 @@ namespace location.search.web.Models
 
         public string Message  { get; set; }
 
+        public int Distance { get; set; }
+
         public string Path { get; set; }
         public GeoLocation Location { get; set; }
     }
