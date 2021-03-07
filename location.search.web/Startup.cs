@@ -27,7 +27,7 @@ namespace location.search.web
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
             var node = new Uri(Configuration.GetValue<string>("AppSettings:ElasticConnection"));
-            var settings = new ConnectionSettings(node);
+            var settings = new ConnectionSettings(node).EnableDebugMode();
 
             services.AddTransient(x => new ElasticClient(settings));
         }

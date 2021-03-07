@@ -25,17 +25,32 @@ namespace location.search.web.Controllers
 
         public IActionResult Index()
         {
-            var response = _elasticClient.Search<LocationResponse>(s => s
-                .Index("locations")
-                .From(0)
-                .Size(1000)
-                .Query(q => q.MatchAll())
-                );
-
-            var documents = response.Documents.Select(f => f.Address).ToList();
+            var result = GetLocations(10,1000);
 
             return View();
         }
+
+        private List<LocationResponse>  GetLocations(int maxDistance, int maxResults)
+        {
+            var response = _elasticClient.Search<LocationResponse>(s => s
+                            .Index("locations")
+                            .From(0)
+                            .Size(1000)
+                            .Query(query => query.Bool(b => b.Filter(filter => filter
+                                .GeoDistance(geo => geo
+                                    .Field(f => f.Location) 
+                                    .Distance("20km").Location(52.6702278, 4.7011616)
+                                    .DistanceType(GeoDistanceType.Plane)
+                        ))
+                )));
+
+            var debugInformation = response.DebugInformation;
+            _logger.LogInformation(debugInformation.ToString());
+            
+            return response.Documents.ToList();
+                        
+        }
+
 
         public IActionResult Privacy()
         {
