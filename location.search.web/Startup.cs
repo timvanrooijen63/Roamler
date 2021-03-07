@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Nest;
 
 namespace location.search.web
 {
@@ -24,6 +25,11 @@ namespace location.search.web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+            var node = new Uri(Configuration.GetValue<string>("AppSettings:ElasticConnection"));
+            var settings = new ConnectionSettings(node);
+
+            services.AddTransient(x => new ElasticClient(settings));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
