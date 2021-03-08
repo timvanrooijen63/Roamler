@@ -29,7 +29,7 @@ namespace location.search.web.Infrastucture.Services
                             .Index("locations")
                             .From(0)
                             .Size(pageSize)
-                             .ScriptFields(sf => sf
+                            .ScriptFields(sf => sf
                                 .ScriptField("distance", descriptor => descriptor
                                     .Source("doc['location'].arcDistance(params.lat,params.lon)")
                                     .Params(f => f.Add("lat", locationQuery.Latitude).Add("lon", locationQuery.Longitude))))
@@ -45,8 +45,8 @@ namespace location.search.web.Infrastucture.Services
                                     .Ascending()
                                     .Unit(DistanceUnit.Meters)
                                     .Mode(SortMode.Min))));
-          //  var debugInformation = response.DebugInformation;
-          //  _logger.LogInformation(debugInformation.ToString());
+            var debugInformation = response.DebugInformation;
+            _logger.LogInformation(debugInformation.ToString());
 
             return response.Documents.ToList();
 

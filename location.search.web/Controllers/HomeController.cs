@@ -5,35 +5,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using location.search.web.Models;
-using Nest;
 using location.search.web.Infrastucture.Services;
+using location.search.web.Models;
 
 namespace location.search.web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ILocationSearchService _locationSearchService;
-
-        public HomeController(ILogger<HomeController> logger, ILocationSearchService locationSearchService)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _locationSearchService = locationSearchService;
         }
-
-        public async Task<IActionResult> Index()
-        {
-            var towerOfLondon = new GeoLocation(51.507313, -0.074308);
-            var result = await _locationSearchService.SearchLocations(towerOfLondon, 10, 1000);
-
-            return View();
-        }
-
-
-
-
-        public IActionResult Privacy()
+        
+        public IActionResult Index()
         {
             return View();
         }

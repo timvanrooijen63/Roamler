@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Nest;
 using location.search.web.Infrastucture.Services;
+using Microsoft.OpenApi.Models;
 
 namespace location.search.web
 {
@@ -26,20 +27,27 @@ namespace location.search.web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "roamlerApi", Version = "v1" });
+            });
 
             var node = new Uri(Configuration.GetValue<string>("AppSettings:ElasticConnection"));
             var settings = new ConnectionSettings(node).EnableDebugMode();
+          
+            services.AddTransient(x => new ElasticClient(settings));
 
             services.AddTransient<ILocationSearchService, LocationSearchService>();
-            services.AddTransient(x => new ElasticClient(settings));
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RoamlerApi v1"));
             }
             else
             {
@@ -56,6 +64,8 @@ namespace location.search.web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                
+                endpoints.MapControllers();
             });
         }
     }
