@@ -29,10 +29,7 @@ namespace location.search.web.Infrastucture.Services
                             .Index("locations")
                             .From(0)
                             .Size(pageSize)
-                            .ScriptFields(sf => sf
-                                .ScriptField("distance", descriptor => descriptor
-                                    .Source("doc['location'].arcDistance(params.lat,params.lon)")
-                                    .Params(f => f.Add("lat", locationQuery.Latitude).Add("lon", locationQuery.Longitude))))
+                           
                             .Query(query => query.Bool(b => b.Filter(filter => filter
                                 .GeoDistance(geo => geo
                                     .Field(f => f.Location)

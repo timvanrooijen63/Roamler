@@ -10,35 +10,47 @@
 
         <p>Type something in the input field to search the table for first names, last names or emails:</p>
         <div class="form-inline">
-        
+
             <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
 
             <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Lat">
             <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Long">
+            <select class="form-control mb-4" v-model="selectedSuggestionId" @@change="selectSuggestion()" >
+                <option v-for="option in locationSuggestions" :value="option.id" :key="option.id">
+                    {{ option.name }}
+                </option>
+            </select>
 
-            <input type="number">
-        </div> 
 
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Firstname</th>
-                    <th>Lastname</th>
-                    <th>Email</th>
-                </tr>
-            </thead>
-            <tbody id="myTable">
-                <tr>
-                    <td>John</td>
-                    <td>Doe</td>
-                    <td>john@example.com</td>
-                </tr>
-                <tr>
-                    <td>Mary</td>
-                    <td>Moe</td>
-                    <td>mary@mail.com</td>
-                </tr>
-            </tbody>
-        </table>
+        </div>
+        <div class="form-inline">
+            <label>Distance</label>
+            <input type="number" class="form-control mb-4" class="form-control mb-4">
+
+             <label>Number of results</label>
+            <input type="number" class="form-control mb-4" class="form-control mb-4">
+        </div>
+        <template v-if="locations.length > 0">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Address</th>
+                        <th>Latitude</th>
+                        <th>Longitude</th>
+                    </tr>
+                </thead>
+                <tbody id="myTable">
+                    <tr v-for="item in locations">
+                        <td>{{ item.address }}</td>
+                        <td>{{ item.location.latitude }}</td>
+                        <td>{{ item.location.longitude }} </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </template>
+        <template v-else>
+            <p>Er zijn geen locaties gevonden.</p>
+        </template>
     </div>
 </div>
