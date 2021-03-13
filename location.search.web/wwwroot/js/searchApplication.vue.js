@@ -26,12 +26,18 @@ const vueApp = new Vue({
                     "name": "London Tower bridge",
                     "lat": 51.50549775,
                     "long": -0.07536088,
+                },
+                {
+                    "id": 4,
+                    "name": "Bergen aan zee",
+                    "lat": 52.65706535,
+                    "long": 4.62719841,
                 }
               ]
         }
     },
     created: function () {
-        this.SearchLocation();
+        this.selectSuggestion();
     },
     methods: {
         selectSuggestion(){
@@ -45,25 +51,23 @@ const vueApp = new Vue({
         },
 
         SearchLocation() {
-            debugger;
-
-            var request = new {
+            var request = {
                 lat: this.lat,
                 long: this.long,
                 pageSize: this.pageSize,
                 distance: this.distance
             };
 
-            axios.get(`LocationSearch`, request, {
-                responseType: 'arraybuffer',
+            axios.post(`LocationSearch`, request, {
+                
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/pdf'
+                    'Accept': 'application/json'
                 }}).then(response => {
                     this.locations = response.data;
                 }, err => {
                     console.error(err);
-                    this.Message = "Er ging iets mis";
+                    this.locations = null;
                 });
         },
     }

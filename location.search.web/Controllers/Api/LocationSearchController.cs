@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using location.search.web.Models; 
+using location.search.web.Models;
 using location.search.web.Infrastucture.Services;
 using Nest;
 
@@ -24,11 +22,11 @@ namespace location.search.web.Controllers
             _locationSearchService = locationSearchService;
         }
 
-        [HttpGet]
-        public async Task<List<LocationResponse>> Get()
+        [HttpPost]
+        public async Task<List<LocationResponse>> Search([FromBody] LocationSearchRequest request)
         {
-            var towerOfLondon = new GeoLocation(51.507313, -0.074308);
-            var result = await _locationSearchService.SearchLocations(towerOfLondon, 10, 5);
+            var location = new GeoLocation(request.Lat, request.Long);
+            var result = await _locationSearchService.SearchLocations(location, request.Distance, request.PageSize);
             return result;
         }
 

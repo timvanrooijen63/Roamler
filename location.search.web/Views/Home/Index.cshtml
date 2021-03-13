@@ -10,11 +10,8 @@
 
         <p>Type something in the input field to search the table for first names, last names or emails:</p>
         <div class="form-inline">
-
-            <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
-
-            <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Lat">
-            <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Long">
+            <input class="form-control mb-4" id="tableSearch" type="text" v-model="lat" placeholder="Lat">
+            <input class="form-control mb-4" id="tableSearch" type="text" v-model="long" placeholder="Long">
             <select class="form-control mb-4" v-model="selectedSuggestionId" @@change="selectSuggestion()" >
                 <option v-for="option in locationSuggestions" :value="option.id" :key="option.id">
                     {{ option.name }}
@@ -24,11 +21,11 @@
 
         </div>
         <div class="form-inline">
-            <label>Distance</label>
-            <input type="number" class="form-control mb-4" class="form-control mb-4">
+            <label  class="form-control mb-4">Distance</label>
+            <input type="number" v-model="distance" @@change="selectSuggestion()" class="form-control mb-4" class="form-control mb-4">
 
-             <label>Number of results</label>
-            <input type="number" class="form-control mb-4" class="form-control mb-4">
+             <label  class="form-control mb-4">Number of results</label>
+            <input type="number" v-model="pageSize" @@change="selectSuggestion()" class="form-control mb-4" class="form-control mb-4">
         </div>
         <template v-if="locations.length > 0">
             <table class="table table-bordered table-striped">
