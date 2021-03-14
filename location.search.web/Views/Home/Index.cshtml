@@ -10,23 +10,25 @@
 
         <p>Type something in the input field to search the table for first names, last names or emails:</p>
         <div class="form-inline">
-            <input class="form-control mb-4" id="tableSearch" type="text" v-model="lat" placeholder="Lat">
-            <input class="form-control mb-4" id="tableSearch" type="text" v-model="long" placeholder="Long">
+            <input class="form-control mb-4"  type="text" v-model="lat" placeholder="Lat">
+            <input class="form-control mb-4"  type="text" v-model="long" placeholder="Long">
             <select class="form-control mb-4" v-model="selectedSuggestionId" @@change="selectSuggestion()" >
                 <option v-for="option in locationSuggestions" :value="option.id" :key="option.id">
                     {{ option.name }}
                 </option>
             </select>
-
-
         </div>
+
         <div class="form-inline">
             <label  class="form-control mb-4">Distance</label>
-            <input type="number" v-model="distance" @@change="selectSuggestion()" class="form-control mb-4" class="form-control mb-4">
+            <input type="number" v-model="distance" @@change="SearchLocation()" class="form-control mb-4">
 
              <label  class="form-control mb-4">Number of results</label>
-            <input type="number" v-model="pageSize" @@change="selectSuggestion()" class="form-control mb-4" class="form-control mb-4">
+            <input type="number" v-model="pageSize" @@change="SearchLocation()" class="form-control mb-4">
+
+            <button  @@click="SearchLocation()" class="form-control mb-4" class="form-control mb-4">Search</button>
         </div>
+
         <template v-if="locations.length > 0">
             <table class="table table-bordered table-striped">
                 <thead>

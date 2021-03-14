@@ -10,6 +10,8 @@ services:
       dockerfile: location.search.web/Dockerfile
     ports:
       - 9001:9001
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Docker"
     networks:
       - roamler
    

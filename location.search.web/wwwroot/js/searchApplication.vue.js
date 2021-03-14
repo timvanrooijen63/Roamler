@@ -51,6 +51,8 @@ const vueApp = new Vue({
         },
 
         SearchLocation() {
+
+            debugger;
             var request = {
                 lat: this.lat,
                 long: this.long,

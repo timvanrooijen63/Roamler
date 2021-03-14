@@ -16,9 +16,18 @@ namespace location.search.web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment environment)
         {
-            Configuration = configuration;
+
+
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(environment.ContentRootPath)
+                .AddJsonFile("appsettings.json", true)
+                .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", true)
+                .AddJsonFile($"appsettings.{System.Environment.MachineName}.json", true)
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
