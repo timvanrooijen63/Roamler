@@ -6,9 +6,9 @@
     <h1 class="display-4">Location searcher</h1>
 
     <div class="container my-4">
-        <p class="font-weight-bold">Zoek een locatie</p>
+        <p class="font-weight-bold">Search for a location</p>
 
-        <p>Type something in the input field to search the table for first names, last names or emails:</p>
+        <p>Fast search enabled by elasticsearch:</p>
         <div class="form-inline">
             <input class="form-control mb-4"  type="text" v-model="lat" placeholder="Lat">
             <input class="form-control mb-4"  type="text" v-model="long" placeholder="Long">
@@ -48,8 +48,13 @@
                 </tbody>
             </table>
         </template>
-        <template v-else>
-            <p>Er zijn geen locaties gevonden.</p>
+
+        <template v-if="loading">
+            <img src="images/loading.gif">
+        </template>
+
+        <template v-if="noResults">
+            <p>There are no locations found</p>
         </template>
     </div>
 </div>

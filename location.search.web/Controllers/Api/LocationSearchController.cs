@@ -12,7 +12,6 @@ namespace location.search.web.Controllers
     [Route("[controller]")]
     public class LocationSearchController : ControllerBase
     {
-
         private readonly ILogger<LocationSearchController> _logger;
         private readonly ILocationSearchService _locationSearchService;
 
@@ -29,6 +28,5 @@ namespace location.search.web.Controllers
             var result = await _locationSearchService.SearchLocations(location, request.Distance, request.PageSize);
             return result;
         }
-
     }
 }

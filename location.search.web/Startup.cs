@@ -18,8 +18,6 @@ namespace location.search.web
     {
         public Startup(IWebHostEnvironment environment)
         {
-
-
             var builder = new ConfigurationBuilder()
                 .SetBasePath(environment.ContentRootPath)
                 .AddJsonFile("appsettings.json", true)
@@ -32,7 +30,6 @@ namespace location.search.web
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
@@ -46,7 +43,6 @@ namespace location.search.web
             var settings = new ConnectionSettings(node).EnableDebugMode();
           
             services.AddTransient(x => new ElasticClient(settings));
-
             services.AddTransient<ILocationSearchService, LocationSearchService>();
         }
 
@@ -62,10 +58,9 @@ namespace location.search.web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

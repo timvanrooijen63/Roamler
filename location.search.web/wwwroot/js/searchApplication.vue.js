@@ -4,16 +4,18 @@ const vueApp = new Vue({
         return {
             pageSize: 10,
             distance: 100,
+            loading: true,
+            noResults: false,
             lat: null,
             long: null,
             locations: [],
             selectedSuggestionId: 1,
             locationSuggestions: [
                 {
-                  "id": 1,
-                  "name": "Amsterdam museumplein",
-                  "lat": 52.35867345,
-                  "long": 4.88282308,
+                    "id": 1,
+                    "name": "Amsterdam museumplein",
+                    "lat": 52.35867345,
+                    "long": 4.88282308,
                 },
                 {
                     "id": 2,
@@ -33,26 +35,22 @@ const vueApp = new Vue({
                     "lat": 52.65706535,
                     "long": 4.62719841,
                 }
-              ]
+            ]
         }
     },
     created: function () {
         this.selectSuggestion();
     },
     methods: {
-        selectSuggestion(){
+        selectSuggestion() {
             var selectedOption = this.locationSuggestions.find(x => x.id === this.selectedSuggestionId)
-
             this.lat = selectedOption.lat;
             this.long = selectedOption.long;
-            
             this.SearchLocation();
-
         },
-
         SearchLocation() {
-
-            debugger;
+            this.loading = true;
+            this.noResults= false;
             var request = {
                 lat: this.lat,
                 long: this.long,
@@ -61,16 +59,19 @@ const vueApp = new Vue({
             };
 
             axios.post(`LocationSearch`, request, {
-                
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
-                }}).then(response => {
-                    this.locations = response.data;
-                }, err => {
-                    console.error(err);
-                    this.locations = null;
-                });
+                }
+            }).then(response => {
+                this.locations = response.data;
+                this.loading = false;
+                this.noResults = this.locations == null || this.locations.length == 0; 
+            }, err => {
+                console.error(err);
+                this.noResults= true;
+                this.locations = null;
+            });
         },
     }
 });
