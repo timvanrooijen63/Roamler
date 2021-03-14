@@ -1,4 +1,4 @@
-#Roamler Location search tool
+<h1>Roamler Location search tool</h1>
 
 The location search tool consists of the following main components:
 
